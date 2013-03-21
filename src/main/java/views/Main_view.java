@@ -26,6 +26,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import models.Event;
+import models.EventInfo;
 
 import services.Htmlservices;
 import services.Services;
@@ -45,32 +46,34 @@ public class Main_view {
 		return jfrm;
 	}
 	
-	private void createNodes(DefaultMutableTreeNode top) {
-	    DefaultMutableTreeNode category = null;
-	    DefaultMutableTreeNode book = null;
-	    
+	private void createNodes(DefaultMutableTreeNode top) {	    
 	    Services serv = new Htmlservices();
 	    ArrayList<Event> events = (ArrayList<Event>) serv.listEvents();
 	    Iterator<Event> iter = events.iterator();
 	    while (iter.hasNext()){
-	    top.add(new DefaultMutableTreeNode(iter.next().getTitle()));
+	    top.add(new DefaultMutableTreeNode(new EventInfo(iter.next())));
 	    }
 	}
 	
 public void display(){
 		
 		
-		final JFrame jfrm=initializeFrame("Mittach Application Client", new Dimension(700,400), new Point(500, 350));
+		final JFrame jfrm=initializeFrame("Mittach Application Client", new Dimension(650,400), new Point(500, 350));
 		jfrm.setLayout(new FlowLayout(FlowLayout.LEFT));
 		DefaultMutableTreeNode events =
 		        new DefaultMutableTreeNode("Events");
 		createNodes(events);
 		JTree eventTree = new JTree(events);
 		JScrollPane treepanel = new JScrollPane(eventTree);
-		treepanel.setPreferredSize( new Dimension( 300, 390 ) );
+		treepanel.setPreferredSize( new Dimension( 300, 350 ) );
 		treepanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		jfrm.getContentPane().add(treepanel);
+		JPanel eventpanel = new JPanel();
+		eventpanel.setPreferredSize(new Dimension( 300, 350 ));
+		eventpanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		jfrm.getContentPane().add(eventpanel);
 		treepanel.setVisible(true);
+		eventpanel.setVisible(true);
 		jfrm.setVisible(true);
 		
 		
