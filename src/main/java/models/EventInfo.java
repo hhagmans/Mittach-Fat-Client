@@ -23,7 +23,31 @@ public class EventInfo {
          this.vegetarian_opt = event.isVegetarian_opt();
      }
 
-     public String toString() {
+     public String getTitle() {
+		return title;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public boolean isVegetarian_opt() {
+		return vegetarian_opt;
+	}
+
+	public int getSlots() {
+		return slots;
+	}
+
+	public String getDetails() {
+		return details;
+	}
+
+	public List<Booking> getBookings() {
+		return bookings;
+	}
+
+	public String toString() {
          return title;
      }
 }

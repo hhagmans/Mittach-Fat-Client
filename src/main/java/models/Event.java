@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
 
-import javax.persistence.OneToMany;
 
 public class Event{
 	 
@@ -16,8 +15,7 @@ public class Event{
     private int slots;
     
     private String details;
-    
-    @OneToMany(mappedBy="event")
+
     private List<Booking> bookings;
     
      

@@ -1,38 +1,36 @@
 package views;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.ListIterator;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import models.Event;
 import models.EventInfo;
-
+import models.Treelistener;
 import services.Htmlservices;
 import services.Services;
 
 public class Main_view {
 
+	 JFrame jfrm;
+	 JTree eventTree;
+	 JScrollPane treepanel;
+	 JPanel eventpanel;
+	 static JList eventDetails;
+	
 	public JFrame initializeFrame(String name,Dimension size, Point location){
 		final JFrame jfrm=new JFrame(name);
 
@@ -55,25 +53,40 @@ public class Main_view {
 	    }
 	}
 	
+	public static void displayEvent(String[]eventdetails){
+		eventDetails.setListData(eventdetails);
+	}
+	
 public void display(){
 		
 		
-		final JFrame jfrm=initializeFrame("Mittach Application Client", new Dimension(650,400), new Point(500, 350));
+		jfrm = initializeFrame("Mittach Application Client", new Dimension(650,400), new Point(500, 350));
 		jfrm.setLayout(new FlowLayout(FlowLayout.LEFT));
 		DefaultMutableTreeNode events =
 		        new DefaultMutableTreeNode("Events");
 		createNodes(events);
-		JTree eventTree = new JTree(events);
-		JScrollPane treepanel = new JScrollPane(eventTree);
+		eventTree = new JTree(events);
+		
+		treepanel = new JScrollPane(eventTree);
 		treepanel.setPreferredSize( new Dimension( 300, 350 ) );
 		treepanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		jfrm.getContentPane().add(treepanel);
-		JPanel eventpanel = new JPanel();
+		
+		eventpanel = new JPanel();
 		eventpanel.setPreferredSize(new Dimension( 300, 350 ));
 		eventpanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		jfrm.getContentPane().add(eventpanel);
+		
+		TreeSelectionListener treeListener = new Treelistener(eventTree, eventpanel);
+		eventTree.addTreeSelectionListener(treeListener);
+		
+		eventDetails = new JList(new String[]{"Wähle Event"});
+		eventDetails.setVisible(true);
+		eventpanel.add(eventDetails);
+		
 		treepanel.setVisible(true);
 		eventpanel.setVisible(true);
+		
 		jfrm.setVisible(true);
 		
 		

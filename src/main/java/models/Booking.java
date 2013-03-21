@@ -1,16 +1,11 @@
 package models;
 
-import javax.persistence.*;
-
  
 
 public class Booking{
 	
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="event_id")
 	private Event event;
 	
-	@ManyToOne
 	private User user;
 	private boolean vegetarian;
 	
