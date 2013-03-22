@@ -33,17 +33,18 @@ public class Treelistener implements TreeSelectionListener{
         
         Object eventInfo = node.getUserObject();
         
-			String[] eventdetails = new String[6];
-			eventdetails[0] = "Titel: " + ((EventInfo) eventInfo).getTitle();
-			eventdetails[1] = "Date: " + ((EventInfo) eventInfo).getDate();
-			eventdetails[2] = "Details: " + ((EventInfo) eventInfo).getDetails();
-			eventdetails[3] = "Slots: " + ((EventInfo) eventInfo).getSlots();
-			eventdetails[4] = "Vegetarian: " + ((EventInfo) eventInfo).isVegetarian_opt();
+			String[] eventdetails = new String[7];
+			eventdetails[0] = "ID: " + ((EventInfo) eventInfo).getID();
+			eventdetails[1] = "Titel: " + ((EventInfo) eventInfo).getTitle();
+			eventdetails[2] = "Date: " + ((EventInfo) eventInfo).getDate();
+			eventdetails[3] = "Details: " + ((EventInfo) eventInfo).getDetails();
+			eventdetails[4] = "Slots: " + ((EventInfo) eventInfo).getSlots();
+			eventdetails[5] = "Vegetarian: " + ((EventInfo) eventInfo).isVegetarian_opt();
 			String book = "Bookings: ";
 			for (int i = 0; i < ((EventInfo) eventInfo).getBookings().size(); i++) {
 				book = book + ((EventInfo) eventInfo).getBookings().get(i).getUser().getShortname() + ", ";
 			}
-			eventdetails[5] = book;
+			eventdetails[6] = book;
 			Main_view.displayEvent(eventdetails);
     }
 }

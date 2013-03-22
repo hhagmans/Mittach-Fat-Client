@@ -8,6 +8,7 @@ import java.util.ListIterator;
 
 public class Event{
 	 
+	private long id;
     private String title;
     private Date date;
     
@@ -19,8 +20,9 @@ public class Event{
     private List<Booking> bookings;
     
      
-    public Event(String title, String details, Date date, int slots, boolean vegetarian) { 
-        this.bookings = new ArrayList<Booking>();
+    public Event(long ID, String title, String details, Date date, int slots, boolean vegetarian) { 
+        this.id = ID;
+    	this.bookings = new ArrayList<Booking>();
         this.title = title;
         this.slots = slots;
         this.details = details;
@@ -37,7 +39,11 @@ public class Event{
         this.vegetarian_opt = event.vegetarian_opt;
     }
     
-    public List<String> getUsers(){
+    public long getID() {
+		return id;
+	}
+
+	public List<String> getUsers(){
     	ListIterator<Booking> iter = this.bookings.listIterator();
     	List<String> users = new ArrayList<String>();;
     	while (iter.hasNext()){

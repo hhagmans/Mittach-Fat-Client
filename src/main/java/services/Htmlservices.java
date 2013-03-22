@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,5 +55,27 @@ public class Htmlservices implements services.Services{
 		 String jsonEvents = getResourceFromURL("http://127.0.0.1:9000/event/all");
 		 List<Event> events = new Gson().fromJson(jsonEvents, new TypeToken<Collection<Event>>(){}.getType());
 		 return events;
+	}
+	
+	public void deleteEvent(long ID){
+	         URL url = null;
+	         HttpURLConnection httpCon = null;
+	         try{
+				url = new URL("http://127.0.0.1:9000/event/" + ID);
+				httpCon = (HttpURLConnection) url.openConnection();
+	         httpCon.setDoOutput(true);
+	         httpCon.setRequestProperty(
+	             "Content-Type", "application/x-www-form-urlencoded" );
+				httpCon.setRequestMethod("DELETE");
+				httpCon.connect();
+				httpCon.getContent();
+	         } catch (Exception e){
+	        	 e.printStackTrace();
+	         }
+	         finally{
+	        	 if (httpCon != null) {
+	        		 httpCon.disconnect();
+	        	 }
+	         }
 	}
 }

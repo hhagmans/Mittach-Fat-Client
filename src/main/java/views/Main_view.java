@@ -4,10 +4,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -29,7 +32,11 @@ public class Main_view {
 	 JTree eventTree;
 	 JScrollPane treepanel;
 	 JPanel eventpanel;
+	 DefaultMutableTreeNode events;
 	 static JList eventDetails;
+	 static JButton deletebutton;
+	 
+	 Services serv = new Htmlservices();
 	
 	public JFrame initializeFrame(String name,Dimension size, Point location){
 		final JFrame jfrm=new JFrame(name);
@@ -45,7 +52,6 @@ public class Main_view {
 	}
 	
 	private void createNodes(DefaultMutableTreeNode top) {	    
-	    Services serv = new Htmlservices();
 	    ArrayList<Event> events = (ArrayList<Event>) serv.listEvents();
 	    Iterator<Event> iter = events.iterator();
 	    while (iter.hasNext()){
@@ -55,15 +61,31 @@ public class Main_view {
 	
 	public static void displayEvent(String[]eventdetails){
 		eventDetails.setListData(eventdetails);
+		deletebutton.setVisible(true);
 	}
 	
-public void display(){
+	public void deleteEvent(){
+		String substr = eventDetails.getModel().getElementAt(0).toString();
+		long ID = Long.parseLong(substr.substring(4, substr.length()));
+		serv.deleteEvent(ID);
+		eventDetails.setListData(new String[]{"Wähle Event"});
+		deletebutton.setVisible(false);
+		events = new DefaultMutableTreeNode("Events");
+		createNodes(events);
+		eventTree = new JTree(events);
+		treepanel = new JScrollPane(eventTree);
+		treepanel.setPreferredSize( new Dimension( 300, 350 ) );
+		treepanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		jfrm.getContentPane().remove(0);
+		jfrm.getContentPane().add(treepanel,0);
+	}
+	
+	public void display(){
 		
 		
 		jfrm = initializeFrame("Mittach Application Client", new Dimension(650,400), new Point(500, 350));
 		jfrm.setLayout(new FlowLayout(FlowLayout.LEFT));
-		DefaultMutableTreeNode events =
-		        new DefaultMutableTreeNode("Events");
+		events = new DefaultMutableTreeNode("Events");
 		createNodes(events);
 		eventTree = new JTree(events);
 		
@@ -83,6 +105,16 @@ public void display(){
 		eventDetails = new JList(new String[]{"Wähle Event"});
 		eventDetails.setVisible(true);
 		eventpanel.add(eventDetails);
+		
+		deletebutton = new JButton("Delete");
+		deletebutton.setVisible(false);
+		ActionListener delete = new ActionListener() {
+            public void actionPerformed( ActionEvent e ) {
+            	deleteEvent();
+            }
+          };
+        deletebutton.addActionListener( delete );
+        eventpanel.add(deletebutton);
 		
 		treepanel.setVisible(true);
 		eventpanel.setVisible(true);

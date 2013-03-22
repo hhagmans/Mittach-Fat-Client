@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 public class EventInfo {
+	private long id;
 	private String title;
     private Date date;
     
@@ -15,6 +16,7 @@ public class EventInfo {
     private List<Booking> bookings;
 
      public EventInfo(Event event) {
+    	 this.id = event.getID();
     	 this.bookings = event.getBookings();
          this.title = event.getTitle();
          this.slots = event.getSlots();
@@ -23,7 +25,11 @@ public class EventInfo {
          this.vegetarian_opt = event.isVegetarian_opt();
      }
 
-     public String getTitle() {
+     public long getID() {
+		return id;
+	}
+
+	public String getTitle() {
 		return title;
 	}
 
