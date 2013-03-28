@@ -3,6 +3,7 @@ package services;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -77,5 +78,42 @@ public class Htmlservices implements services.Services{
 	        		 httpCon.disconnect();
 	        	 }
 	         }
+	}
+	
+	public void createEvent(Event event) {
+		String body = new Gson().toJson(event);
+		OutputStreamWriter writer = null;
+		BufferedReader reader = null;
+		try{
+			URL url = new URL( "http://127.0.0.1:9000/event" );
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestMethod( "POST" );
+			connection.setDoInput( true );
+			connection.setDoOutput( true );
+			connection.setUseCaches( false );
+			connection.setRequestProperty( "Content-Type",
+					"application/json" );
+			connection.setRequestProperty( "Content-Length", String.valueOf(body.length()) );
+
+			writer = new OutputStreamWriter( connection.getOutputStream() );
+			writer.write( body );
+			writer.flush();
+			
+			connection.getContent();
+
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
+		finally{
+			try {
+				if (writer != null)
+					writer.close();
+				if (reader!= null)
+					reader.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} 
 	}
 }
